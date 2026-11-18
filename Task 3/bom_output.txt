@@ -1,0 +1,8 @@
+Run                                            qty  m each  total m   +10% m
+Consulting rooms (24 outlets, avg 57.5 m)       24    57.5     1380     1519  Cat6A U/FTP
+Waiting-hall APs (6, 60 m)                       6    60.0      360      397  Cat6A U/FTP
+Pharmacy uplink (OM4 duplex, 96 m)               1    96.0       96      106  OM4 duplex fibre
+Link to main building (OS2 duplex, 420 m)        1   420.0      420      463  OS2 single-mode duplex fibre
+
+Cat6A total with spare = 1916 m -> 7 boxes of 305 m
+wrote bill_of_materials.csv
