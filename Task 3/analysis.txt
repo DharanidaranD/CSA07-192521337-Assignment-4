@@ -1,0 +1,38 @@
+TASK 3.1 - RUN CHECK (limits: 90 m permanent link, 100 m channel incl. patch cords)
+ Consulting rooms 35-80 m : OK (80 m + 10 m patch cords = 90 m channel, within 100 m)
+ Waiting-hall APs 60 m    : OK for length. Prefer Cat6A: PoE+/multigig (2.5/5G for Wi-Fi 6) with margin.
+ Pharmacy 96 m            : FAILS. 96 m > 90 m permanent link; with patch cords the channel is ~106 m > 100 m.
+                            Cat6A does NOT lengthen the limit (still 90/100 m); fix = multimode fibre (OM4) to a small
+                            switch beside the pharmacy, or move/add a telecom room closer than 90 m.
+ Link to main building 420 m: FAILS for any copper. Use fibre. Multimode OM3/OM4: 1000BASE-SX 550 m OK, but
+                            10GBASE-SR only 300 m (OM3) / 400 m (OM4) < 420 m -> choose single-mode OS2 (10GBASE-LR 10 km).
+ T568A at one end + T568B at other = a CROSSOVER cable (pairs 2 and 3 swapped: orange <-> green).
+ Modern switches/NICs with Auto-MDIX (and 1000BASE-T, which uses all 4 pairs and negotiates pair swap) work fine.
+ Problems remain with old hubs/switches without Auto-MDIX, mislabelled "straight" cables, hard-to-trace faults,
+ and failing channel certification. Re-terminate to one standard (T568B) end to end.
+
+TASK 3.2 - DEVICES
+ Hubs: none (one collision domain, no security, half duplex).
+ Layer-2 PoE access switches per block (consulting rooms, APs). Layer-3 switches at core/distribution (VLAN routing).
+ Router + next-generation firewall at the internet edge and between guest/clinical/medical-device zones.
+ Wireless APs (Wi-Fi 6) in waiting halls, wards. Firewall in front of patient-record servers.
+ Domain counting (outpatient block): every full-duplex switch link is its own collision domain (no collisions in practice):
+   24 consulting + 6 AP + 4 pharmacy + 1 pharmacy uplink + 1 main-building uplink = 36 collision domains.
+ Broadcast domains = VLANs: Clinical, Pharmacy, Guest Wi-Fi, AP-management = 4 in this block.
+ Hospital-wide: 5 blocks x 3 VLANs (clinical/staff, medical devices, guest) + 1 DMZ = 16 broadcast domains.
+
+TASK 3.4 - T568B COLOUR ORDER (pin 1 -> 8)
+ 1 white/orange, 2 orange, 3 white/green, 4 blue, 5 white/blue, 6 green, 7 white/brown, 8 brown
+ T568A: 1 white/green, 2 green, 3 white/orange, 4 blue, 5 white/blue, 6 orange, 7 white/brown, 8 brown
+ Straight-through = same standard both ends; crossover = A one end, B other end.
+ Packet Tracer: use Copper Straight-Through (PC-switch, router-switch) and Copper Cross-Over (switch-switch without
+ Auto-MDIX, PC-PC). Test with ping and screenshot link lights.
+
+ALTERNATIVE - 420 m: MULTIMODE FIBRE vs Cat6A + switch half-way
+ Cat6A limit 100 m per segment -> 420 m needs ceil(420/90) = 5 segments = 4 intermediate switches (a single half-way
+ switch gives 2 x 210 m, still too long). Each needs mains power, weatherproof cabinets, UPS; extra failure points; ~0.1-0.5 ms/hop.
+ Multimode: no intermediate equipment, 2 transceivers (~1 W each), passive cable. Limits: 1G-SX 550 m ok;
+ 10G needs OM4 <= 400 m (too short) -> single-mode for 10G.
+ Lightning: copper between buildings carries induced surge and ground-potential differences into switch ports (needs
+ surge protectors/earthing at every hop). Fibre is a dielectric, immune to EMI and surge; only metallic armour/strength members need earthing.
+ Decision: single-mode (or OM4 for 1G) fibre.
