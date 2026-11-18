@@ -1,0 +1,21 @@
+== 4.1 ALOHA ==
+pure ALOHA    S = G e^-2G, max at G=0.5 -> 1/(2e) = 0.1839 (18.4%)
+slotted ALOHA S = G e^-G,  max at G=1   -> 1/e    = 0.3679 (36.8%)
+== CSMA/CD minimum frame (10 Mbps, 2500 m, v = 2e8 m/s) ==
+propagation 12.5 us, round trip 25.0 us
+min frame = R x 2tp = 250 bits = 31.25 bytes (propagation only)
+IEEE 802.3 fixes 512 bits (64 B) slot time = 51.2 us, which covers repeater/jam delays
+max span for 512 bits at 2e8 m/s: 5120 m (one-way, ideal)
+== 4.3 ATM vs Ethernet overhead ==
+ATM cell header overhead 5/53 = 9.43%
+IP packet 1500 B over AAL5/ATM: 32 cells = 1696 B, overhead 11.6%
+   Ethernet frame (14 hdr + 4 FCS): 1518 B, overhead 1.19%; with preamble+IFG (38 B) 2.47%
+IP packet   64 B over AAL5/ATM: 2 cells = 106 B, overhead 39.6%
+   Ethernet frame (14 hdr + 4 FCS): 82 B, overhead 21.95%; with preamble+IFG (38 B) 37.25%
+IP packet   46 B over AAL5/ATM: 2 cells = 106 B, overhead 56.6%
+   Ethernet frame (14 hdr + 4 FCS): 64 B, overhead 28.12%; with preamble+IFG (38 B) 45.24%
+== 4.2 WLAN sizing: 300 phones ==
+30 clients/AP -> 10 APs
+40 clients/AP -> 8 APs
+50 clients/AP -> 6 APs
+Chosen: 8 APs on 5 GHz (~38 phones each), 2.4 GHz radios only on 4 APs, channels 1/6/11 reused
