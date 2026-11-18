@@ -1,0 +1,10 @@
+Design                     links  ports   cost Rs  single cuts that isolate Emergency/Theatres from DC
+Bus (E-O-T-L-D order)          4      8   384,000  Emergency-Outpatient cuts Emergency; Outpatient-Theatres cuts Emergency; Theatres-Lab cuts Emergency; Theatres-Lab cuts Theatres; Lab-Admin(DC) cuts Emergency; Lab-Admin(DC) cuts Theatres
+Ring                           5     10   480,000  NONE (survives every single cut)
+Star (DC = Admin)              4      8   384,000  Admin(DC)-Emergency cuts Emergency; Admin(DC)-Theatres cuts Theatres
+Full mesh                     10     20   960,000  NONE (survives every single cut)
+Hybrid (triangle core)         5     10   480,000  NONE (survives every single cut)
+
+Double-cut survival (both critical blocks still reach the data centre):
+Ring                       2/10 double cuts survived
+Hybrid (triangle core)     7/10 double cuts survived
