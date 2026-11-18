@@ -1,0 +1,29 @@
+== Address plan (10.0.0.0/8 VLSM, one /16 per site type) ==
+Students (hostels, 3000 x 2 dev)   10.10.0.0/19    usable   8190 need  6000 OK
+Lab computers (600)                10.20.0.0/22    usable   1022 need   600 OK
+Staff wired+wifi                   10.30.0.0/22    usable   1022 need   700 OK
+Library public + wifi              10.31.0.0/23    usable    510 need   300 OK
+Guest wifi                         10.40.0.0/22    usable   1022 need   800 OK
+CCTV (~250 cameras)                10.50.0.0/23    usable    510 need   250 OK
+Servers / data centre              10.60.0.0/24    usable    254 need   120 OK
+Management (switches, APs)         10.99.0.0/24    usable    254 need   150 OK
+DMZ                                10.61.0.0/27    usable     30 need    20 OK
+Core point-to-point /30 links      10.254.0.0/24   usable    254 need    60 OK
+overlaps: False
+
+== Uplink oversubscription (access ports x speed / uplink) ==
+Hostel access (48x1G, 4 closets/block)           down   48 G / up  20 G =   2.4:1  (2x10G LAG)
+Lab access (48x1G)                               down   48 G / up  20 G =   2.4:1  (2x10G)
+Academic access (48x1G PoE)                      down   48 G / up  20 G =   2.4:1  (2x10G)
+Library/Auditorium access (48x1G)                down   48 G / up  10 G =   4.8:1  (1x10G)
+Distribution->Core (hostel zone, 12 closets)     down  240 G / up  80 G =   3.0:1  (2x40G)
+Distribution->Core (labs+academic)               down  120 G / up  80 G =   1.5:1  (2x40G)
+Target: access:dist <= 20:1, dist:core <= 4:1 (typical Cisco guideline).
+
+== Collapsed core vs three-tier (assumed costs, Rs) ==
+three-tier: 2 core + 6 distribution = 8 devices, cost devices Rs 3,900,000; fibre runs core-dist 12 + dist-access 48
+collapsed : 2 core = 2 devices (saves 6), device cost Rs 1,800,000; saves Rs 2,100,000 but needs longer runs/ports on core: 48 runs of core ports
+net device+port+fibre saving = Rs 3,252,000 (links removed: 12)
+If a campus-wide outage costs Rs 150,000/hour (assumed), break-even = 14.0 outage-hours in 10 years
+Single core failure: collapsed core with ONE core = whole campus down; with a pair, it survives but all load and all
+risk sit on 2 boxes; three-tier confines a distribution failure to its zone (hostels, labs, ...).
