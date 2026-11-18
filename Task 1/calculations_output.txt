@@ -1,0 +1,14 @@
+BEFORE: one 10 Mbps shared coax bus (hub floor is the same collision domain)
+  worst-case share per PC  = 10/30 = 0.333 Mbps
+  with ~55% CSMA/CD efficiency at heavy load = 0.183 Mbps
+  50 MB save, all 30 busy: 1200 s (20 min)
+AFTER: switched star, 1 Gbps full duplex per PC port
+  dedicated link per PC = 1000 Mbps (no sharing at the edge)
+  server on 1G        : all 30 saving at once ->    33.3 Mbps each, 50 MB in  12.0 s
+  server on 2x1G LAG  : all 30 saving at once ->    66.7 Mbps each, 50 MB in   6.0 s
+  server on 10G       : all 30 saving at once ->   333.3 Mbps each, 50 MB in   1.2 s
+  one user alone: 0.40 s for 50 MB
+ALTERNATIVE: all-Wi-Fi 6, one AP (2x2, 80 MHz, MCS11 PHY 1201 Mbps)
+  usable 60% airtime efficiency = 721 Mbps shared, half duplex -> 24.0 Mbps per user
+  usable 40% airtime efficiency = 480 Mbps shared, half duplex -> 16.0 Mbps per user
+  50 MB at ~20 Mbps = 20 s  -> switched star wins for month-end saves
