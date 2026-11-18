@@ -1,0 +1,29 @@
+! Cisco Packet Tracer: VLANs on the access switch of the Admin block.
+enable
+configure terminal
+hostname SW-Admin
+vlan 10
+ name Office
+vlan 20
+ name CCTV
+! TODO 1 (done): Create VLAN 30 named Guest-WiFi
+vlan 30
+ name Guest-WiFi
+interface range FastEthernet0/1 - 12
+ switchport mode access
+ switchport access vlan 10
+! TODO 2 (done): Fa0/13-20 in VLAN 20, Fa0/21-24 in VLAN 30 as access ports
+interface range FastEthernet0/13 - 20
+ switchport mode access
+ switchport access vlan 20
+interface range FastEthernet0/21 - 24
+ switchport mode access
+ switchport access vlan 30
+! TODO 3 (done): Gi0/1 = 802.1Q trunk to core, only VLANs 10, 20, 30
+interface GigabitEthernet0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+! (On a 3560/3650/3750 add first: switchport trunk encapsulation dot1q ; a 2960 is dot1Q-only)
+end
+show vlan brief
+show interfaces trunk
