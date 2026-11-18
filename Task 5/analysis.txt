@@ -1,0 +1,9 @@
+ALTERNATIVE - physically separate guest network vs VLAN
+ Equipment cost : VLAN = Rs 0 extra switches (config only). Physical = extra switch(es) + cabling + 2nd internet link/router/firewall.
+ Isolation      : VLAN gives logical isolation enforced by ACL/firewall; correctly configured it is strong, but VLAN-hopping
+                  (double tagging / switch spoofing) and misconfig are risks - mitigate: no DTP, native VLAN unused, trunk pruning.
+                  Physical gives complete air-gap isolation: no shared switch, no configuration mistake can leak.
+ Management     : VLAN = one set of switches to manage; physical = twice the devices, patching, monitoring, upgrades.
+ Worth it when  : guest traffic must never touch the hospital fabric (regulatory/ patient-data audits, untrusted public
+                  hot-spots, DDoS from guests must not share uplink), or for very high-security zones (e.g. medical devices);
+                  otherwise VLAN + firewall + separate SSID is enough.
