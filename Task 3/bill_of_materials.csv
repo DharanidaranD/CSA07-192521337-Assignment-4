@@ -1,0 +1,22 @@
+Section,Item/Run,Medium or note,Qty,Length each (m),Total (m),With 10% spare (m)
+Cabling,"Consulting rooms (24 outlets, avg 57.5 m)",Cat6A U/FTP,24,57.5,1380.0,1519
+Cabling,"Waiting-hall APs (6, 60 m)",Cat6A U/FTP,6,60,360,397
+Cabling,"Pharmacy uplink (OM4 duplex, 96 m)",OM4 duplex fibre,1,96,96,106
+Cabling,"Link to main building (OS2 duplex, 420 m)",OS2 single-mode duplex fibre,1,420,420,463
+Cat6A boxes (305 m),,,7
+Equipment,48-port PoE+ L2/L3 access switch (4x SFP+),"consulting rooms, APs, uplinks",1
+Equipment,8-port PoE+ switch with 2 SFP (pharmacy),4 outlets + fibre uplink,1
+Equipment,"Wi-Fi 6 access point (PoE, 2.5G port)",waiting hall,6
+Equipment,Cat6A RJ45 keystone jack,24 consulting + 6 AP + 4 pharmacy,34
+Equipment,Cat6A patch panel 48-port 1U,,1
+Equipment,Cat6A patch cord 1-2 m (switch side),,34
+Equipment,Cat6A patch cord 3 m (work-area side),24 rooms + 4 pharmacy,28
+Equipment,SFP+ 10G-LR single-mode transceiver,"main building link, both ends",2
+Equipment,SFP 1000BASE-SX / 10G-SR multimode transceiver,pharmacy link,2
+Equipment,LC-LC duplex patch cord,,4
+Equipment,"Fibre patch tray / ODF 1U, LC adapters",,1
+Equipment,Outdoor-rated armoured fibre (420 m) + gland/ducting,see run table,1
+Equipment,"12U wall-mount rack with cable manager, PDU","approx 6U used, 6U spare",1
+Equipment,Line-interactive UPS 1-2 kVA (2U),,1
+Equipment,Surge/earthing kit for rack,,1
+Equipment,"Labels, velcro ties, cable tester",,1
