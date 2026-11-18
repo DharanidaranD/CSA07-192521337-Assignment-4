@@ -1,0 +1,15 @@
+Paste your real Packet Tracer outputs here after you run the configs:
+ 1) show vlan brief            -> VLANs 10, 20, 30 with ports (Fa0/1-12, Fa0/13-20, Fa0/21-24)
+ 2) show interfaces trunk      -> Gi0/1 trunking, allowed 10,20,30
+ 3) ping tests (expected AFTER routing + ACL):
+    Office(VLAN10) -> CCTV(VLAN20)    : success (routed)  [add an ACL if CCTV should be one-way]
+    Office -> Guest                   : success from Office side (ACL only filters traffic entering Gi0/0.30;
+                                        replies are NOT blocked because they match no deny - see note)
+    Guest(VLAN30) -> Office/CCTV      : FAIL (ACL deny 192.168.0.0/16)
+    Guest -> Internet 203.0.113.2     : success
+    BEFORE routing: any inter-VLAN ping: FAIL (separate broadcast domains)
+ Note: an inbound ACL on Gi0/0.30 filters packets the guest SENDS. Office->Guest echo reaches the guest, but the
+ guest's echo-reply is sent with source 192.168.30.x to 192.168.10.x and is denied -> that ping also fails.
+ Test it and record what you observe.
+ Broadcast domains: before = 1 (all ports in one VLAN) ; after = 3 LAN VLANs (+1 router-ISP link = 4 incl. WAN).
+ 802.1Q tag = 4 bytes (TPID 2 B + TCI 2 B: PCP 3 bit, DEI 1 bit, VID 12 bit): min frame 64 -> 68 B, max 1518 -> 1522 B.
