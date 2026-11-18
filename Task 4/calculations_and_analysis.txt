@@ -1,0 +1,33 @@
+4.1 MULTIPLE ACCESS
+ Pure ALOHA max throughput S = 1/(2e) = 0.184 (18.4%); slotted ALOHA 1/e = 0.368 (36.8%) - slotting halves the vulnerable period.
+ CSMA/CD min frame: tprop = 2500/(2x10^8) = 12.5 us; RTT = 25 us; min frame = 10 Mbps x 25 us = 250 bits (~31 B).
+ Standard Ethernet uses 512 bits (64 B, 51.2 us) to allow for repeaters, jam signal and safety margin.
+ Switched full-duplex Ethernet: each link is point-to-point with separate transmit/receive pairs, so two stations never share a
+ medium and collisions cannot occur -> CSMA/CD is switched off. Wi-Fi: all stations share one half-duplex radio channel; a
+ transmitter cannot listen while sending, and hidden terminals exist, so it avoids collisions with CSMA/CA (random back-off,
+ ACK for each frame, optional RTS/CTS).
+4.2 WLAN - 300 phones
+ ~40 phones per AP -> 8 Wi-Fi 6 APs in two rows. 5 GHz at 40 MHz, 4-channel reuse (36+40, 44+48, 149+153, 157+161),
+ neighbouring APs never share a channel. 2.4 GHz has only 3 non-overlapping channels (1, 6, 11): turn the radio on in 4 of 8 APs
+ (1,6,11 repeating) to avoid co-channel interference; keep 2.4 GHz for IoT/legacy.
+ Wi-Fi 6 adds: OFDMA (an AP splits a channel into resource units and serves many small-packet phones in one transmission - lower
+ latency/overhead for dense crowds); MU-MIMO (uplink+downlink, up to 8 users at once with beamforming); BSS colouring (6-bit colour
+ in the header lets an AP ignore overlapping-BSS frames and reuse the channel -> spatial reuse in dense halls); also TWT saves battery.
+ Bluetooth suits: short-range low-power wearables, pulse oximeters, glucometers, thermometers, BLE asset/patient tags, headsets.
+ Not suitable: life-critical monitoring/infusion pumps that need guaranteed delivery and security, long range (>10-30 m),
+ high throughput imaging, and dense 2.4 GHz-congested areas.
+4.3 BACKBONE / WAN
+ ATM overhead 5/53 = 9.43% per cell; for a 1500 B packet: 32 cells = 1696 B -> 11.6%, and 64-byte packets 39.6%
+ (Ethernet 1518 B frame: 1.19%, 2.47% with preamble+IFG). Cell tax is why ATM lost to Ethernet/IP for data.
+ Virtual circuit identifiers: Frame Relay - 10-bit DLCI, locally significant per link; ATM - VPI (8 bits UNI/12 NNI) + VCI (16
+ bits), switched hop by hop; MPLS - 20-bit label in a 32-bit shim header (label, 3-bit TC, S bit, 8-bit TTL) swapped by LSRs along an LSP.
+ Choice for three clinics: carrier MPLS (L3VPN) as primary for video consultations and patient records (guaranteed SLA,
+ DiffServ queues, low jitter), with an IPsec internet VPN as a low-cost backup. If the budget is very tight, internet IPsec VPN
+ with dual ISPs and QoS marking at the edge can serve basic data but cannot guarantee video.
+ALTERNATIVE - INTERNET VPN vs MPLS
+ Internet VPN: best-effort bandwidth, delay 30-100 ms variable, jitter/loss not guaranteed, encryption overhead (IPsec ~50-70 B),
+ QoS only inside your own router (no priority across ISPs). MPLS: contracted CIR/SLA (e.g. 99.9%+ availability, delay <40 ms,
+ jitter <10 ms, loss <0.1%), 4-8 DiffServ classes - EF class for voice/video. Video consult needs ~2-4 Mbps per call each way,
+ <150 ms one-way delay, <30 ms jitter, <1% loss. Cost rule: accept an MPLS premium up to (hourly cost of lost/poor consultations x
+ expected hours saved per month). Example (ASSUMPTION): 3 clinics, 10 consults/day at Rs 500, 10 h/month of poor VPN quality
+ -> ~Rs 12,500/month at stake plus clinical risk, so a premium up to about Rs 15,000-20,000/month for the guarantee is defensible.
