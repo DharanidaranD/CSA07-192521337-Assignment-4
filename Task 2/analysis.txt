@@ -1,0 +1,25 @@
+ASSUMPTION: the data centre (patient-record servers) sits in the Administration block, so a star centred on the data centre has
+4 links (a separate data-centre building would be 5 links/10 ports/Rs 4,80,000). Cost per link = Rs 60,000 fibre + 2 x Rs 18,000 ports = Rs 96,000.
+
+2.1 OPTIONS (n = 5 blocks)
+ Topology   links  ports   cost
+ Bus          4      8     4x60,000 + 8x18,000 = Rs 3,84,000
+ Ring         5     10     5x60,000 + 10x18,000 = Rs 4,80,000
+ Star         4      8     Rs 3,84,000   (hub block has 4 ports)
+ Full mesh   10     20     10x60,000 + 20x18,000 = Rs 9,60,000   (n(n-1)/2 links, n-1 ports per block)
+2.2 FAILURE TEST (single cut, emergency E / theatres T to the servers in Admin D)
+ Bus (E-O-T-L-D): every segment isolates E; T-L and L-D also isolate T -> fails.
+ Star: E-D cut isolates E; T-D cut isolates T -> fails.
+ Ring: no single cut disconnects E or T -> passes.   Mesh: passes.
+2.3 CHEAPEST HYBRID THAT MEETS THE RULE
+ E and T each need two edge-disjoint paths to D, so each needs degree >= 2. The minimum is a triangle D-E-T (3 links), then
+ Outpatient and Lab hang off D as stars (2 links) = 5 links, 10 ports = Rs 4,80,000 (partial-mesh core + star inside blocks).
+ Inside each block a star of switches is used (copper, not counted). No 4-link design can satisfy the rule (4 links connect 5
+ blocks as a tree: any tree has a cut that isolates something).
+ Same cost as the ring, but E and T keep a direct link to D and to each other, and Outpatient/Lab are tail sites.
+2.4 Simulation: see PACKET_TRACER_BUILD.md.
+ Mesh vs star growth: n=20 -> mesh 190 links, star 20 links (n(n-1)/2 vs n).
+ALTERNATIVE - RING OF FIBRE: 5 links, 10 ports, Rs 4,80,000. Survives any single cut for all 5 blocks (the hybrid protects only E and T
+ for the rule: Outpatient/Lab are single-homed). Double cuts (computed in hospital_analysis.py): ring keeps E and T connected in 2/10
+ pairs; hybrid 7/10 pairs. Hybrid is better against double cuts for the critical blocks at the same cost; ring is better when every
+ block must survive a cut. Ring needs spanning-tree/ERPS or RSTP convergence (seconds); the hybrid core also needs RSTP/OSPF.
